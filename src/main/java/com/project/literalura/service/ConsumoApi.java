@@ -10,21 +10,34 @@ import java.net.http.HttpResponse;
 
 @Component
 public class ConsumoApi {
-    private final HttpClient client = HttpClient.newHttpClient();
+
+    private final HttpClient client = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL)
+            .build();
 
     public String obterDados(String endereco) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endereco))
+                    .header("User-Agent", "Literalura/1.0")
                     .GET()
                     .build();
 
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.body();
+            int sc = resp.statusCode();
+            if (sc != 200) {
+                throw new RuntimeException("Chamada HTTP falhou: status=" + sc + " url=" + endereco);
+            }
+
+            String body = resp.body();
+            if (body == null || body.isBlank()) {
+                throw new RuntimeException("Resposta vazia da API: " + endereco);
+            }
+            return body;
+
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao chamar API: " + endereco, e);
         }
     }
 }
