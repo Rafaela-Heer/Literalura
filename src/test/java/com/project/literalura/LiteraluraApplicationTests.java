@@ -1,4 +1,4 @@
-package com.project.Literalura;
+package com.project.literalura;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

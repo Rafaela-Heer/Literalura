@@ -1,4 +1,4 @@
-package com.project.Literalura.service;
+package com.project.literalura.service;
 
 public interface IConverteDados {
     <T> T obterDados(String json, Class<T> classe);
