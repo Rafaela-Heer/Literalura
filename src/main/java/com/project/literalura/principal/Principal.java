@@ -118,7 +118,7 @@ public class Principal{
     }
 
     private void listarAutores() {
-        var authors = authorRepo.findAllByOrderByNameAsc(); // ou authorRepo.findAll()
+        var authors = authorRepo.findAllByOrderByNameAsc();
         if (authors.isEmpty()) {
             System.out.println("Nenhum autor registrado.");
             return;
